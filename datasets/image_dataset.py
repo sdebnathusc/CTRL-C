@@ -94,7 +94,8 @@ class ImageDataset(Dataset):
         self.return_masks = return_masks
         self.transform = transform
         
-        self.list_filename = [image_path,]
+        # self.list_filename = [image_path,]
+        self.list_filename = image_path
         
     def __getitem__(self, idx):
         target = {}
