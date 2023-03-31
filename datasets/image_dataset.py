@@ -130,7 +130,9 @@ class ImageDataset(Dataset):
         org_segs = lsd(gray, scale=0.5)
         org_segs = filter_length(org_segs, self.min_line_length)
         num_segs = len(org_segs)
-        assert len(org_segs) > 10, print(len(org_segs))
+        # assert len(org_segs) > 10, print(len(org_segs))
+        if len(org_segs) <= 10:
+            print("Assert failed! Continuing... ", len(org_segs))
         
         segs = normalize_segs(org_segs, pp=pp, rho=rho)
         

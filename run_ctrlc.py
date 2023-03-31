@@ -133,7 +133,14 @@ class TaskRunner:
 
 def compute(cfg, model, img_dir, sample_n_imgs, device):
     print("Processing: ", img_dir)
+    output_file = cfg.OUTPUT_DIR + "/" + img_dir.name + ".npy"
+    if os.path.isfile(output_file):
+        print("Output file already exists! Skipping.")
+        return
     img_paths = [str(p) for p in img_dir.iterdir()]
+    if len(img_paths) == 0:
+        print("Input folder empty! Skipping.")
+        return
     if sample_n_imgs > 0:
         idx = np.round(np.linspace(0, len(img_paths) - 1, sample_n_imgs)).astype(int)
         img_paths = np.array(img_paths)[idx].tolist()
@@ -166,7 +173,7 @@ def compute(cfg, model, img_dir, sample_n_imgs, device):
     cy = img_sz[0]/2.0
     fx = np.median(np.array(all_fxs))
     intr = [fx, fx, cx, cy]
-    np.save(cfg.OUTPUT_DIR + "/" + img_dir.name + ".npy", intr)
+    np.save(output_file, intr)
             
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('CTRL-C script', parents=[get_args_parser()])
